@@ -1,0 +1,62 @@
+# Exercise Solutions
+```{r echo = FALSE, message=FALSE,comment=FALSE, warning=FALSE}
+library(ggplot2)
+library(plyr)
+library(dplyr)
+subsahara_jan17 <- read.csv("subsahara_jan17.csv")
+china_2weeks <- read.csv("china_2weeks.csv", stringsAsFactors = FALSE)
+```
+
+## Change the Look Exercise
+```{r}
+ggplot(subsahara_jan17, aes(x = QuadClass)) +
+  geom_bar(fill = "lightblue", colour = "darkblue", width = .5) +
+  xlab("Quad Class of the Events") +
+  ylab("Number of Events") +
+  ggtitle("Number of Events by Quad Class") +
+  theme(axis.title.x = element_text(color = 'blue')) +
+  theme(plot.title = element_text(size = 20)) +
+  scale_x_continuous(breaks = c(1,2,3,4), labels = c("One","Two","Three","Four"))
+```
+
+
+## PE Part 1
+```{r}
+subsahara_jan17$EventBaseCode <- as.factor(subsahara_jan17$EventBaseCode)
+ggplot(subsahara_jan17, aes(x = EventBaseCode)) +
+  geom_bar(fill = "red", colour = "black", width = .5) +
+  theme(axis.text.x = element_text(angle = 90, hjust = .5, vjust = .5)) +
+  xlab("Event Code") + 
+  theme(axis.title.y = element_blank()) +  
+  ggtitle("Number of Events by Event Code")
+```
+
+## PE Part 2
+```{r}
+ggplot(china_2weeks, aes(x = as.Date(days), y = n, color = country))+
+  geom_line(size = 1) +
+  ggtitle("Events Involving the Chinese Government in 3 Countries")+
+  theme(plot.title = element_text(hjust = .5)) +  #Center the plot title
+  theme(axis.title.y = element_blank()) +
+  theme(axis.title.x = element_blank()) +
+  scale_x_date(breaks = dailybreaks) +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0)) +  #change angle of axis text
+  theme(legend.position = "top")+  #legend to top of chart
+  labs(color = "Location of Activity") +
+  geom_point(shape = 18, size = 4) +
+  scale_color_brewer(palette = "Set1", labels = c("Nigeria","Zambia","Zimbabwe"))
+```
+
+## PE Part 3
+```{r}
+sub51 <- dplyr::filter(subsahara_jan17, EventBaseCode == 51)
+ggplot(sub51, aes(x= EventBaseCode, fill = ActionGeo_ADM1Code))+
+  geom_bar(position = 'dodge', color = "black")+
+  ggtitle("Number of Events by Action Geographic Location\n for Event Code with the Most Events") +
+  xlab("Event Code") +
+  labs(fill = "Geographic Location")+
+  scale_fill_brewer(palette = "Set3")
+```
+
+
+

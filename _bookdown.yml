@@ -1,0 +1,2 @@
+book_filename: "bookdown-demo"
+rmd_files: ["index.Rmd","01-intro.Rmd","02-barcharts.Rmd","03-aesthetics.Rmd","04-multi_variable.Rmd","05-linecharts.Rmd","06-histograms.Rmd","07-pe.Rmd","08-solutions.Rmd"]

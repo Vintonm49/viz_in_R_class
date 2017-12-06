@@ -1,0 +1,39 @@
+# Histograms
+A histogram is used to map a continuous variable to the x-axis and use bins to depict the distribution of that variable.
+
+- In **ggplot**, histograms use geom function *geom_histogram()*.
+
+- In the subsahara_jan17 dataset, a continuous variable is NumMentions, which is the number of mentions of the event across all source documents, an indicator of the importance of the event.
+
+- We want to see the distribution of the NumMentions variable.
+
+```{r echo = FALSE}
+library(ggplot2)
+subsahara_jan17 <- read.csv("subsahara_jan17.csv")
+```
+
+```{r warning = FALSE, comment=FALSE}
+ggplot(subsahara_jan17, aes(x=NumMentions))+
+  geom_histogram()
+```
+
+The default in **ggplot** is 30 bins.  But we can set the number of bins in two ways.
+First we want to find the max and min of the variable.
+```{r}
+summary(subsahara_jan17$NumMentions)
+```
+
+To set the width of the bins use `binwidth = 2`
+This will create bins from 1 up to but not including 3, 3 up to but not including 5, and so on.
+
+```{r}
+ggplot(subsahara_jan17, aes(x = NumMentions)) +
+  geom_histogram(binwidth = 2, fill = "lightblue", color = "black")
+```
+
+To set the number of bins use `bins = 5`
+```{r}
+ggplot(subsahara_jan17, aes(x = NumMentions)) +
+  geom_histogram(bins =5, fill = "lightblue", color = "black")
+```
+
