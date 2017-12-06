@@ -1,0 +1,8 @@
+---
+title: "Viz in R Class"
+author: "LTC Melanie Vinton"
+date: "December 6, 2017"
+output: html_document
+---
+
+This is a visualization module from an Introduction to R course taught by analysts at the Center for Army Analysis.  The focus is on using the **ggplot2** package.  The data used was downloaded from THOR, <https://data.world/datamil>.  The module is written using a bookdown format.
