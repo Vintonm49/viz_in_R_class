@@ -5,10 +5,12 @@ bookdown::gitbook:
     sharing: null
     toc:
       before: |
-        <li><a href="./">Introduction to Visualization in R</a></li>
+        <li><a href = "/">Course Home</a></li>
+        <li><a href="./">Data Visualization</a></li>
     download: ["pdf"]
 bookdown::pdf_book:
   includes:
     in_header: preamble.tex
   latex_engine: xelatex
   keep_tex: yes
+

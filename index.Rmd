@@ -1,16 +1,32 @@
 --- 
-title: "Introduction to Visualization in R"
+title: "Introduction to Data Visualization"
 author: "LTC Melanie Vinton"
 date: "`r Sys.Date()`"
 site: bookdown::bookdown_site
 output: bookdown::gitbook
-documentclass: book
-bibliography: [book.bib, packages.bib]
-biblio-style: apalike
-link-citations: yes
-github-repo: rstudio/bookdown-demo
+documentclass: memoir
+classoption: oneside
 description: "This is an introduction to visualization in R using the ggplot2 package."
+always_allow_html: yes
 ---
-# Background
 
-This module is an introduction to visualization in R using the ggplot2 package.  These relatively simple examples should provide a baseline of knowledge to allow the user to create far more interesting and informative graphics than spreadsheet based graphing functionality.  Many of the most impressive visualizations seen today are made in R with packages like ggplot2.
+# Visualization Module Intro
+
+**First, restart your R session.**
+
+[Motivation](https://www.youtube.com/watch?v=jbkSRLYSojo)
+<br><br>
+
+The purpose of visualization is improve or reinforce human cognition of abstract data.
+<br><br>
+
+This module is an introduction to visualization in R using the **ggplot2** package.  Many of the most impressive visualizations seen today are made in R with packages like ggplot2.
+<br><br>
+
+Here's some examples:
+<http://www.r-graph-gallery.com/portfolio/ggplot2-package>
+
+
+Some elements of this module use the following reference: <http://jcyhong.github.io/ggplot_demo.html>
+
+

@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html >
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Introduction to Data Visualization</title>
+  <meta name="description" content="This is an introduction to visualization in R using the ggplot2 package.">
+  <meta name="generator" content="bookdown 0.5 and GitBook 2.6.7">
+
+  <meta property="og:title" content="Introduction to Data Visualization" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="This is an introduction to visualization in R using the ggplot2 package." />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Introduction to Data Visualization" />
+  
+  <meta name="twitter:description" content="This is an introduction to visualization in R using the ggplot2 package." />
+  
+
+<meta name="author" content="LTC Melanie Vinton">
+
+
+<meta name="date" content="2017-11-09">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  
+  
+<link rel="prev" href="7-3-date-scales.html">
+<link rel="next" href="7-5-line-width-color-and-points.html">
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href = "/">Course Home</a></li>
+<li><a href="./">Data Visualization</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Visualization Module Intro</a></li>
+<li class="chapter" data-level="2" data-path="2-ggplot2-package.html"><a href="2-ggplot2-package.html"><i class="fa fa-check"></i><b>2</b> ggplot2 Package</a><ul>
+<li class="chapter" data-level="2.1" data-path="2-1-layering.html"><a href="2-1-layering.html"><i class="fa fa-check"></i><b>2.1</b> Layering</a></li>
+<li class="chapter" data-level="2.2" data-path="2-2-packages.html"><a href="2-2-packages.html"><i class="fa fa-check"></i><b>2.2</b> Packages</a></li>
+<li class="chapter" data-level="2.3" data-path="2-3-references.html"><a href="2-3-references.html"><i class="fa fa-check"></i><b>2.3</b> References</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="3-scatterplots.html"><a href="3-scatterplots.html"><i class="fa fa-check"></i><b>3</b> Scatterplots</a><ul>
+<li class="chapter" data-level="3.1" data-path="3-1-cars-data.html"><a href="3-1-cars-data.html"><i class="fa fa-check"></i><b>3.1</b> Cars Data</a></li>
+<li class="chapter" data-level="3.2" data-path="3-2-scatterplot.html"><a href="3-2-scatterplot.html"><i class="fa fa-check"></i><b>3.2</b> Scatterplot</a></li>
+<li class="chapter" data-level="3.3" data-path="3-3-basic-exercise.html"><a href="3-3-basic-exercise.html"><i class="fa fa-check"></i><b>3.3</b> Basic Exercise</a></li>
+<li class="chapter" data-level="3.4" data-path="3-4-basic-exercise-solution.html"><a href="3-4-basic-exercise-solution.html"><i class="fa fa-check"></i><b>3.4</b> Basic Exercise Solution</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="4-customize.html"><a href="4-customize.html"><i class="fa fa-check"></i><b>4</b> Customize</a><ul>
+<li class="chapter" data-level="4.1" data-path="4-1-colors.html"><a href="4-1-colors.html"><i class="fa fa-check"></i><b>4.1</b> Colors</a></li>
+<li class="chapter" data-level="4.2" data-path="4-2-labels.html"><a href="4-2-labels.html"><i class="fa fa-check"></i><b>4.2</b> Labels</a></li>
+<li class="chapter" data-level="4.3" data-path="4-3-customize-exercise.html"><a href="4-3-customize-exercise.html"><i class="fa fa-check"></i><b>4.3</b> Customize Exercise</a></li>
+<li class="chapter" data-level="4.4" data-path="4-4-customize-exercise-solution.html"><a href="4-4-customize-exercise-solution.html"><i class="fa fa-check"></i><b>4.4</b> Customize Exercise Solution</a></li>
+<li class="chapter" data-level="4.5" data-path="4-5-themes.html"><a href="4-5-themes.html"><i class="fa fa-check"></i><b>4.5</b> Themes</a></li>
+<li class="chapter" data-level="4.6" data-path="4-6-scales.html"><a href="4-6-scales.html"><i class="fa fa-check"></i><b>4.6</b> Scales</a></li>
+<li class="chapter" data-level="4.7" data-path="4-7-single-scale-rule.html"><a href="4-7-single-scale-rule.html"><i class="fa fa-check"></i><b>4.7</b> Single Scale Rule</a></li>
+<li class="chapter" data-level="4.8" data-path="4-8-ggthemes.html"><a href="4-8-ggthemes.html"><i class="fa fa-check"></i><b>4.8</b> ggthemes</a></li>
+<li class="chapter" data-level="4.9" data-path="4-9-saving-outputs.html"><a href="4-9-saving-outputs.html"><i class="fa fa-check"></i><b>4.9</b> Saving Outputs</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="5-bar-charts.html"><a href="5-bar-charts.html"><i class="fa fa-check"></i><b>5</b> Bar Charts</a><ul>
+<li class="chapter" data-level="5.1" data-path="5-1-thor-data.html"><a href="5-1-thor-data.html"><i class="fa fa-check"></i><b>5.1</b> Thor Data</a></li>
+<li class="chapter" data-level="5.2" data-path="5-2-geom-bar.html"><a href="5-2-geom-bar.html"><i class="fa fa-check"></i><b>5.2</b> geom_bar</a></li>
+<li class="chapter" data-level="5.3" data-path="5-3-legends.html"><a href="5-3-legends.html"><i class="fa fa-check"></i><b>5.3</b> Legends</a></li>
+<li class="chapter" data-level="5.4" data-path="5-4-bar-exercise.html"><a href="5-4-bar-exercise.html"><i class="fa fa-check"></i><b>5.4</b> Bar Exercise</a></li>
+<li class="chapter" data-level="5.5" data-path="5-5-bar-exercise-solution.html"><a href="5-5-bar-exercise-solution.html"><i class="fa fa-check"></i><b>5.5</b> Bar Exercise Solution</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="6-barcharts-with-values.html"><a href="6-barcharts-with-values.html"><i class="fa fa-check"></i><b>6</b> Barcharts with Values</a><ul>
+<li class="chapter" data-level="6.1" data-path="6-1-aircraft-data.html"><a href="6-1-aircraft-data.html"><i class="fa fa-check"></i><b>6.1</b> Aircraft Data</a></li>
+<li class="chapter" data-level="6.2" data-path="6-2-stat-parameter.html"><a href="6-2-stat-parameter.html"><i class="fa fa-check"></i><b>6.2</b> Stat Parameter</a></li>
+<li class="chapter" data-level="6.3" data-path="6-3-hjust-and-vjust.html"><a href="6-3-hjust-and-vjust.html"><i class="fa fa-check"></i><b>6.3</b> hjust and vjust</a></li>
+<li class="chapter" data-level="6.4" data-path="6-4-sorting-bars.html"><a href="6-4-sorting-bars.html"><i class="fa fa-check"></i><b>6.4</b> Sorting Bars</a></li>
+<li class="chapter" data-level="6.5" data-path="6-5-bar-with-values-exercise.html"><a href="6-5-bar-with-values-exercise.html"><i class="fa fa-check"></i><b>6.5</b> Bar with Values Exercise</a></li>
+<li class="chapter" data-level="6.6" data-path="6-6-bar-with-values-exercise-solution.html"><a href="6-6-bar-with-values-exercise-solution.html"><i class="fa fa-check"></i><b>6.6</b> Bar with Values Exercise Solution</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="7-line-charts.html"><a href="7-line-charts.html"><i class="fa fa-check"></i><b>7</b> Line Charts</a><ul>
+<li class="chapter" data-level="7.1" data-path="7-1-missions-per-day.html"><a href="7-1-missions-per-day.html"><i class="fa fa-check"></i><b>7.1</b> Missions Per Day</a></li>
+<li class="chapter" data-level="7.2" data-path="7-2-geom-line.html"><a href="7-2-geom-line.html"><i class="fa fa-check"></i><b>7.2</b> geom_line</a></li>
+<li class="chapter" data-level="7.3" data-path="7-3-date-scales.html"><a href="7-3-date-scales.html"><i class="fa fa-check"></i><b>7.3</b> Date Scales</a></li>
+<li class="chapter" data-level="7.4" data-path="7-4-annotation.html"><a href="7-4-annotation.html"><i class="fa fa-check"></i><b>7.4</b> Annotation</a></li>
+<li class="chapter" data-level="7.5" data-path="7-5-line-width-color-and-points.html"><a href="7-5-line-width-color-and-points.html"><i class="fa fa-check"></i><b>7.5</b> Line Width, Color, and Points</a></li>
+<li class="chapter" data-level="7.6" data-path="7-6-time-series-exercise.html"><a href="7-6-time-series-exercise.html"><i class="fa fa-check"></i><b>7.6</b> Time Series Exercise</a></li>
+<li class="chapter" data-level="7.7" data-path="7-7-time-series-exercise-solution.html"><a href="7-7-time-series-exercise-solution.html"><i class="fa fa-check"></i><b>7.7</b> Time Series Exercise Solution</a></li>
+<li class="chapter" data-level="7.8" data-path="7-8-multi-line-charts.html"><a href="7-8-multi-line-charts.html"><i class="fa fa-check"></i><b>7.8</b> Multi-Line Charts</a></li>
+<li class="chapter" data-level="7.9" data-path="7-9-facet-charts.html"><a href="7-9-facet-charts.html"><i class="fa fa-check"></i><b>7.9</b> Facet Charts</a></li>
+<li class="chapter" data-level="7.10" data-path="7-10-facet-exercise.html"><a href="7-10-facet-exercise.html"><i class="fa fa-check"></i><b>7.10</b> Facet Exercise</a></li>
+<li class="chapter" data-level="7.11" data-path="7-11-facet-exercise-solution.html"><a href="7-11-facet-exercise-solution.html"><i class="fa fa-check"></i><b>7.11</b> Facet Exercise Solution</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="8-histograms.html"><a href="8-histograms.html"><i class="fa fa-check"></i><b>8</b> Histograms</a><ul>
+<li class="chapter" data-level="8.1" data-path="8-1-hist.html"><a href="8-1-hist.html"><i class="fa fa-check"></i><b>8.1</b> hist()</a></li>
+<li class="chapter" data-level="8.2" data-path="8-2-geom-histogram.html"><a href="8-2-geom-histogram.html"><i class="fa fa-check"></i><b>8.2</b> geom_histogram()</a></li>
+<li class="chapter" data-level="8.3" data-path="8-3-bins.html"><a href="8-3-bins.html"><i class="fa fa-check"></i><b>8.3</b> Bins</a></li>
+<li class="chapter" data-level="8.4" data-path="8-4-histogram-exercise.html"><a href="8-4-histogram-exercise.html"><i class="fa fa-check"></i><b>8.4</b> Histogram Exercise</a></li>
+<li class="chapter" data-level="8.5" data-path="8-5-histogram-exercise-solution.html"><a href="8-5-histogram-exercise-solution.html"><i class="fa fa-check"></i><b>8.5</b> Histogram Exercise Solution</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="9-interactive-graphics.html"><a href="9-interactive-graphics.html"><i class="fa fa-check"></i><b>9</b> Interactive Graphics</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Introduction to Data Visualization</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="annotation" class="section level2">
+<h2><span class="header-section-number">7.4</span> Annotation</h2>
+<p>The deep dip in our time series chart occurs on Christmas Day. (hint: use the <code>arrange()</code> function to determine that) We can label that information on the chart using the <code>annotate()</code> function in the ggplot.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(msn,<span class="kw">aes</span>(<span class="dt">x=</span>MSNDATE, <span class="dt">y=</span> missions))<span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_line</span>()<span class="op">+</span>
+<span class="st">  </span><span class="kw">scale_x_date</span>(<span class="dt">breaks=</span>datebreaks, <span class="dt">labels =</span> <span class="kw">date_format</span>(<span class="st">&quot;%d-%b-%y&quot;</span>)) <span class="op">+</span>
+<span class="st">  </span><span class="kw">theme</span>(<span class="dt">axis.text.x=</span><span class="kw">element_text</span>(<span class="dt">angle=</span><span class="dv">90</span>, <span class="dt">hjust=</span><span class="dv">1</span>, <span class="dt">vjust =</span> .<span class="dv">5</span>)) <span class="op">+</span>
+<span class="st">  </span><span class="kw">annotate</span>(<span class="st">&quot;text&quot;</span>, <span class="dt">x =</span> <span class="kw">as.Date</span>(<span class="st">&#39;1965-12-25&#39;</span>), <span class="dt">y =</span> <span class="dv">20</span>, <span class="dt">label =</span> <span class="st">&quot;Christmas Day&quot;</span>)</code></pre></div>
+<p><img src="visualization_files/figure-html/unnamed-chunk-32-1.png" width="672" /></p>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="7-3-date-scales.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="7-5-line-width-color-and-points.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": null,
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"download": ["visualization.pdf"],
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+</body>
+
+</html>

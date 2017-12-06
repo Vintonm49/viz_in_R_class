@@ -1,0 +1,746 @@
+# Visualization Module
+
+**First, restart your R session.**
+
+[Motivation](https://www.youtube.com/watch?v=jbkSRLYSojo)
+<br><br>
+
+The purpose of visualization is improve or reinforce human cognition of abstract data.
+<br><br>
+
+This module is an introduction to visualization in R using the **ggplot2** package.  Many of the most impressive visualizations seen today are made in R with packages like ggplot2.
+<br><br>
+
+Here's some examples:
+<http://www.r-graph-gallery.com/portfolio/ggplot2-package>
+
+
+Some elements of this module use the following reference: <http://jcyhong.github.io/ggplot_demo.html>
+
+
+
+
+## ggplot2 Package
+
+The **ggplot2** package is based on the grammar of graphics, which breaks graphics into parts which are controlled separately and combined.  
+
+- Plots are constructed in layers, which can be more intuitive.
+
+- This package is among the most useful and widely used for visualization in R, created by Hadley Wickham.  
+
+- There are plotting functions available in base R but **ggplot2** provides a powerful, intuitive framework for creating and customizing visualizations.
+
+
+### Layering
+
+Here's a generic example of a **ggplot2** script:
+```{r eval = FALSE}
+ggplot(data = my_df, aes(x = height, y = weight)) + geom_point()
+```
+
+Every graph has the same basic components: 
+
+1.  Data
+* usually a data frame 
+
+2.  Aesthetic mapping
+* how variables in the data frame map to visual objects on the graph
+* objects (or aesthetics) to map to include x-axis, y-axis, size, shape, color, transparency
+* specified with the `aes()` function
+
+3.  Geoms that represent data points visually.  
+* specifies the type of plot
+* geom = geometric object
+* examples (see the cheatsheet!): `geom_line()`, `geom_point()`, `geom_bar()`, `geom_histogram()`  
+
+
+
+### Packages
+
+First, lets install the packages we will use in this module.
+```{r warning=FALSE,comment=FALSE,message=FALSE}
+library(ggplot2)
+library(RColorBrewer)
+library(dplyr)
+library(lubridate)
+library(scales)
+library(plotly)
+
+```
+
+
+
+### References
+
+Some useful references include:
+
+- <http://www.cookbook-r.com>
+
+- <http://ggplot2.tidyverse.org/reference/>
+
+- <https://www.rstudio.com/resources/cheatsheets/>
+
+- "R Graphics Cookbook" by Winston Chang  (PDF can be found online at <http://ase.tufts.edu/bugs/guide/assets/R%20Graphics%20Cookbook.pdf>)
+
+- <http://www.google.com>
+
+
+## Scatterplots
+A scatterplot displays two variables from a data set.  It is often used to explore the relationship between those variables.  You can also add variables to the visualization with different colors, shapes, and sizes of the dots.
+
+
+### Cars Data
+We will start with a data set of 32 cars and 11 performance and design features.  
+
+- This data was taken from a 1974 issue of Motor Trend magazine and is built into base R as a dataframe called "mtcars".  
+
+- It is often used for educational or demonstration purposes.  
+
+- We will read in the data from a CSV because that is the way you would handle data in the real world.
+
+```{r }
+cars <- read.csv("mtcars.csv", stringsAsFactors = FALSE)
+```
+
+```{r}
+head(cars)
+```
+
+To get the variable descriptions, call the "mtcars" dataset in help.  
+
+```{r eval = FALSE}
+?mtcars
+```
+
+### Cars Scatterplot
+Let's create a scatterplot of miles per gallon (mpg) versus engine size (disp).  
+
+The first step is to initialize our plot using the `ggplot()` function.  This creates a coordinate system that we will then add layers to.  We identify the data set to use with the "data" parameter and map the x and y aesthetics with `aes()`.  
+
+```{r}
+ggplot(data = cars, aes(x = mpg, y = disp))
+```
+
+Notice that R automatically adds the variable names to the axes and has a default look for the axis lines and background.  We will go over how to customize those later.   
+
+Now we will specify the geometric object we want to see on the plot, in this case points, using the `geom_point` function.  
+
+Use a "+" sign to add the next layer.  Be sure it is at the *end* of the previous line!
+
+```{r}
+ggplot(data = cars, aes(x = mpg, y = disp)) +
+  geom_point()
+```
+
+It appears there is a negative relationship between miles per gallon and engine size.
+
+## Basic Exercise
+Now lets add another layer - a line - using the `geom_line()` function.
+
+
+## Customize
+There are nearly infinite possibilities for customizing charts with **ggplot2**.  We will focus on colors, labels, themes, and scales.
+
+
+### Colors
+Using color is a great way to customize a visualization and make it more interesting and easier to understand.  
+
+- R has over 600 colors built in which you can refer to by name.  
+
+- The `colors()` function provides a list of the names.  
+
+- You can also select colors by hexadecimal codes, such as "#990000" for deep red.  
+
+- [R Cookbook Graphs section](http://www.cookbook-r.com/Graphs/Colors_(ggplot2)/) has a very useful section on colors and palettes.   
+
+- Another good reference for color palettes is <http://colorbrewer2.org>
+
+- The *RColorBrewer* package provides a set of useful color palettes that can be used to customize the color ranges on a graph.  Use *display.brewer.all()* to see the set of palettes. 
+
+- Note:  Sometimes you will see the word "color" spelled "colour" - they are interchangeable in R.  
+
+Let's change the color of the points to purple, by setting it directly in the `aes()` function of the geom.  
+```{r}
+ggplot(data = cars, aes(x = mpg, y = disp)) +
+  geom_point(color = "purple")
+```
+
+You may also want to map the color of the points to another variable in your dataset.  This is done using the `aes()` function and setting color equal to the variable name.  
+
+Let's map the color to the number of cylinders.  
+
+```{r}
+ggplot(data = cars, aes(x = mpg, y = disp, color = cyl)) +
+  geom_point()
+```
+
+Here's another way to do the same thing - you may see this style in your "googling"...
+```{r}
+ggplot(data = cars, aes(x = mpg, y = disp)) +
+  geom_point(aes(color = cyl))
+```
+
+Notice that a legend for the color is automatically added to the graph, and a palette of blues is used by default.  However, the cylinders variable is treated as continuous but it is really just three values:  4, 6, and 8.
+
+To treat the cylinders variable as categorical, you can convert it to a factor inside the `ggplot()` function.  Notice what happens to the legend.
+
+```{r}
+ggplot(data = cars, aes(x = mpg, y = disp, color = factor(cyl))) +
+  geom_point()
+```
+
+
+
+### Labels
+You may want to customize the labels on the axes, using the `xlab()` and `ylab()` functions.  You can also add a graph title to the `ggtitle()` function.  Again, the "+" sign is used to add these layers.
+
+```{r}
+ggplot(data = cars, aes(x = mpg, y = disp, color = factor(cyl))) +
+  geom_point() +
+  xlab("Miles Per Gallon") +
+  ylab("Engine Size in Cubic Inches") +
+  ggtitle("Fuel Efficiency vs Engine Size")
+  
+```
+
+
+## Customize Exercise
+
+Using the cars data:
+
+1. Plot wt versus hp with a scatterplot.
+
+2. Color the points based on gear.
+
+3. Change both axis labels - spell out wt and hp.
+
+4. Add a chart title.
+
+
+
+
+## Themes
+
+There are many more options for customizing a graph.  Adjusting the look involves of two different types of elements, *themes* and *scales*.
+
+Theme elements are non-data components of the plot such as the title, legend, and axes.  
+
+- To change the appearance of a theme element, use the `theme()` function on the component and identify the corresponding element object, such as "element_text".  
+
+- Common element objects are text or lines and not all element objects are associated with every component.  
+
+- The [R Graphics Cookbook](http://ase.tufts.edu/bugs/guide/assets/R%20Graphics%20Cookbook.pdf) covers this in section 9.4 very clearly. 
+
+Let's change the text of the axis labels:
+
+- Font color of x-axis label to blue.
+
+- Font size of graph title to 20.
+
+```{r}
+ggplot(data = cars, aes(x = mpg, y = disp, color = factor(cyl))) +
+  geom_point() +
+  xlab("Miles Per Gallon") +
+  ylab("Engine Size in Cubic Inches") +
+  ggtitle("Fuel Efficiency vs Engine Size") +
+  theme(axis.title.x = element_text(color = 'blue')) +
+  theme(plot.title = element_text(size = 20))
+```
+
+A few other useful theme functions:
+
+- Remove an axis label: `theme(axis.title.x = element_blank())`
+
+- Remove grid lines: `theme(panel.grid.major = element_blank())`
+
+- Rotate x-axis text labels by 90 degrees:  `theme(axis.text.x = element_text(angle = 90))`
+
+- Move the position of a legend: `theme(legend.position = "bottom")`
+
+
+ 
+
+
+
+## Scales
+Scale elements map data values to visual values.  
+
+- To change the default mapping, a new scale layer is added.  
+
+- A `scale` function identifies the aesthetic you want to adjust, a pre-packaged scale to use, and the specific arguments for what you are trying to change.  
+
+- Different types of data use different types of aesthetics and scales - it is important to match them up correctly.
+
+- The [Data Visualization Cheatsheet](https://www.rstudio.com/resources/cheatsheets) are a good reference for different types of scales.    
+
+We'll use `scale_color_manual()` and define the colors we want use.  
+
+- "scale" indicates that we want to customize a data element.  
+
+- "color" indicates which data element.
+
+- "manual" is used to specify the color mapping we want to use. 
+
+```{r}
+ggplot(data = cars, aes(x = mpg, y = disp, color = factor(cyl))) +
+  geom_point() +
+  xlab("Miles Per Gallon") +
+  ylab("Engine Size in Cubic Inches") +
+  ggtitle("Fuel Efficiency vs Engine Size") +
+  scale_color_manual(values = c("red","orange","blue"))
+  
+```
+
+
+### Single Scale Rule
+Once you use a "scale" function on an aesthetic (in this case, color), you need to include all the scale parameters in that function.  If you add another scale layer for the same aesthetic, it will replace the previous layers.  
+
+
+Here's an example:
+
+- Change the mapping for the color aesthetic from *cyl* to the *wt* variable, which is continuous.
+
+- You could use the `scale_color_continuous()` or `scale_color_gradient()` to effect the color aesthetic.
+
+- Let's change the color scheme with `scale_color_gradient()` and the breaks on the legend with `scale_color_continuous()`.
+
+```{r}
+ggplot(data = cars, aes(x = mpg, y = disp, color = wt)) +
+  geom_point() +
+  xlab("Miles Per Gallon") +
+  ylab("Engine Size in Cubic Inches") +
+  ggtitle("Fuel Efficiency vs Engine Size") +
+  scale_color_gradient(low = "red", high = "blue") +
+  scale_color_continuous(breaks = c(2,3,4,5))
+```
+
+But notice the error message and that the colors don't change.  
+
+Instead, combine the parameters into just one "scale" function.
+```{r}
+ggplot(data = cars, aes(x = mpg, y = disp, color = wt)) +
+  geom_point() +
+  xlab("Miles Per Gallon") +
+  ylab("Engine Size in Cubic Inches") +
+  ggtitle("Fuel Efficiency vs Engine Size") +
+  scale_color_continuous(low = "red", high = "blue", breaks = c(2,3,4,5)) 
+```
+
+## ggthemes
+
+**ggthemes** is a package that provides some customized geoms, scales, and themes. 
+
+- <https://github.com/jrnold/ggthemes>
+
+
+## Saving Outputs
+
+To save your visualizations outside of RStudio, simply click the Export button on the Plots tab.
+
+Options:
+
+- Save as an Image.
+
+- Save as a PDF.
+
+- Copy to Clipboard.
+
+
+## Bar Charts
+Bar charts are generally used to display numeric values on the y-axis for different categories or discrete values on the x-axis.  Bar charts are not well suited for continuous data on the x-axis because it will try to make a bar for every possible value of the continuous range.  
+
+### Thor Data
+For this section we will work with the THOR data from Vietnam, 1965.
+
+
+```{r }
+nam65 <- read.csv("thor_vietnam_65_clean.csv", stringsAsFactors = FALSE)
+dim(nam65)
+```
+
+This data set includes a subset of the variables from the raw THOR data and cleaned up events with missing or inaccurate geospatial coordinates.  
+
+### geom_bar
+The heights of the bar on the y-axis can represent counts or values from your data set.  The code for the graph changes depending on which is the case. 
+
+- The geom for bar charts is: `geom_bar()`
+
+
+Let's make a bar chart that shows the number of missions performed by each military service.  
+
+- Use just one variable from our data set because we are interested in the counts for that variable.
+
+```{r}
+ggplot(data = nam65, aes(x = MILSERVICE))+
+  geom_bar()
+```
+
+Now we will add another variable called "MFUNC_DESC_CLASS", which has two factor levels, "KINETIC" and "NON-KINETIC".  We will use the "fill" aesthetic to map the new variable to the graph.
+
+```{r}
+ggplot(data = nam65, aes(x = MILSERVICE, fill = MFUNC_DESC_CLASS))+
+  geom_bar()
+
+```
+
+Notice this creates a stacked bar.  If you want to have bars side by side for that variable, set the "position" parameter to "dodge" in the geom like this: `geom_bar(position = "dodge")`.  
+
+If we want to change the default colors, we use a "scale" function.  
+
+- Set the colors manually with: `scale_fill_manual(values = c("red","purple"))`
+
+- Use a palette from *RColorBrewer* with: `scale_fill_brewer(palette = "Spectral")`
+
+
+### Legends
+We want to make some changes to the legend on our chart.  
+
+- Change the legend title with `labs(fill = "Mission Type")`
+
+- Change the text of the labels with `scale_fill_discrete(labels = c("Kinetic","Non-Kinetic"))`
+
+```{r}
+ggplot(data = nam65, aes(x = MILSERVICE, fill = MFUNC_DESC_CLASS))+
+  geom_bar() +
+  labs(fill = "Mission Type") +
+  scale_fill_discrete(labels = c("Kinetic","Non-Kinetic"))
+  
+```
+
+
+
+## Bar Exercise
+Update our bar chart:
+
+1.  Add a title
+
+2.  Remove the y-axis label ("count")
+
+3.  Change the x-axis label 
+
+4.  Change the colors for the fill aesthetic (don't forget the single scale rule!)
+
+
+
+
+## Barcharts with Values
+Remember that there's a difference in how to make a bar chart with values from a variable in the data on the y-axis vice counts for a single variable.
+
+### Aircraft Data
+For this example, we will summarize the average number of aircraft per mission across the different target types.  
+```{r}
+aircraft <- dpylr::summarize(group_by(nam65, TGTTYPE), avgNumAcft = mean(NUMOFACFT))
+head(aircraft)
+```
+
+Notice that the first row is missing the target type information.  Let's fill in the blank space.
+```{r}
+aircraft[1,1] <- "UNIDENTIFIED"
+head(aircraft)
+```
+
+
+### Stat Parameter
+To make a barchart of this data, you need to set the "stat" parameter in the `geom_bar()` function to "identity", instead of the default "bin".  
+
+- The "stat" refers to the statistical transformation that ggplot does on the raw data, which by default in bar charts is set to bin and count the number of points for each bin.  
+
+- To use the variable data on the y-axis instead of the count, you need to change the "stat" parameter.  
+
+For this example, we want to see the average number of aircraft (y-axis) per target type (x-axis).
+
+```{r}
+ggplot(data = aircraft, aes(x = TGTTYPE, y = avgNumAcft))+
+  geom_bar(stat= "identity")
+```
+
+
+### hjust and vjust
+The "hjust" and "vjust" parameters in the `theme()` function for an axis change the horizontal and vertical justification of the text.  
+
+- These work in conjunction with the "angle" parameter to make the text more readable.
+
+- A good reference for this is <https://www.r-bloggers.com/hjust-and-vjust/>
+
+- Note that each parameter can only take certain values and the combination results in different positions.  
+
+- The theme function looks like: `theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = .5))`
+
+### Sorting Bars
+
+We can sort the bars by height using the `reorder()` function in the `aes()` for the x-axis.  
+```{r}
+ggplot(data = aircraft, aes(x = reorder(TGTTYPE, avgNumAcft), y = avgNumAcft))+
+  geom_bar(stat= "identity", fill = "blue") +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = .5)) +
+  ggtitle("Do Different Types of Targets Involve More Aircraft?") +
+  theme(plot.title = element_text(size = 14)) +
+  xlab("Target Type") +
+  ylab("Average Number of Aircraft")
+
+```
+
+You can also change the sort to from most to least like this: `aes(x = reorder(TGTTYPE, desc(avgNumAcft)), y = avgNumAcft)`
+
+
+## Bar with Values Exercise
+Update the average number of aircraft per target type chart with:
+
+1.  Create a dataframe with the number of missions per mission type (hint: MFUNC_DESC variable)
+
+2.  Make a bar chart that displays the 20 most frequent mission types, in descending order.
+
+3.  Rotate the labels on the x-axis to make it readable.
+
+4.  Add a chart title and make it a larger font.
+
+5.  Change the axis titles.
+
+6.  Change the color of the bars to blue.
+
+
+## Line Charts
+A time series is a series of data points indexed in time order, most commonly in an equally spaced sequence.  While this makes the data discrete, you often see a time series visualized with a line.  We will create our line charts once again with the **ggplot2** package.
+
+
+### Missions Per Day
+Let's make a time series chart of the missions, showing the number of missions each day.
+
+First we need to format the "MSNDATE" variable using the **lubridate** package.  This will fix the inconsistent date formats.
+```{r}
+nam65$MSNDATE<-lubridate::ymd(nam65$MSNDATE)
+```
+
+Notice that the data type for "MSNDATE" changed to Date.
+
+Next, we need to count the number of missions per day.
+
+```{r}
+msn <- dplyr::summarise(group_by(nam65, MSNDATE), missions = n())
+dim(msn)
+```
+
+Notice that there are 92 days from 1Oct65 to 31Dec65, and there are 92 rows in our new dataframe, indicating that there are no missing dates.  
+
+To do time series, you need to make sure there are no missing dates.  You may need to fill in the data set with zeros for dates that are missing or aggregate to a lower level of precision.
+
+### geom_line
+Now we will create our plot, using `geom_line()`.
+```{r}
+ggplot(msn, aes(x = MSNDATE, y = missions))+
+  geom_line()
+```
+
+
+## Date Scales
+Notice that ggplot only used the months as labels on the x-axis.  To create weekly breaks across the time series, use the `seq()` and `as.Date()` functions.
+
+```{r}
+datebreaks<-seq(as.Date("1965-10-01"),as.Date("1965-12-31"), by="week")
+head(datebreaks)
+```
+
+To change the labels on the x-axis:
+
+- Use a `scale_x_date()` function to adjust the labels on the x-axis with the "datebreaks" vector.
+
+- Use the `date_format()` function from the **scales** package to change the format of the dates to "day-month-year".
+
+
+
+```{r}
+ggplot(msn,aes(x=MSNDATE, y= missions))+
+  geom_line()+
+  scale_x_date(breaks=datebreaks, labels = date_format("%d-%b-%y")) +
+  theme(axis.text.x=element_text(angle=90, hjust=1, vjust = .5)) 
+```
+
+
+## Annotation
+
+The deep dip in our time series chart occurs on Christmas Day. (hint:  use the `arrange()` function to determine that)  We can label that information on the chart using the `annotate()` function in the ggplot.
+
+```{r}
+ggplot(msn,aes(x=MSNDATE, y= missions))+
+  geom_line()+
+  scale_x_date(breaks=datebreaks, labels = date_format("%d-%b-%y")) +
+  theme(axis.text.x=element_text(angle=90, hjust=1, vjust = .5)) +
+  annotate("text", x = as.Date('1965-12-25'), y = 20, label = "Christmas Day")
+```
+
+
+## Line Width, Color, and Points
+
+We can make some adjustments to the look of a line chart.
+
+A good reference for points and lines: <http://www.cookbook-r.com/Graphs/Shapes_and_line_types/>  
+
+Let's make the following changes:
+
+1.  Increase the width and color of the line with `geom_line(size = 1, color = "blue")`.
+
+2.  Add points and change the shape and size of the point with `geom_point(shape = 15, size = 2)`.
+
+```{r}
+ggplot(msn,aes(x=MSNDATE, y= missions)) +
+  geom_line(size = 1, color = "blue") +
+  geom_point(shape = 15, size = 2) +
+  scale_x_date(breaks=datebreaks, labels = date_format("%d-%b-%y")) +
+  theme(axis.text.x=element_text(angle=90, hjust=1, vjust = .5))
+
+```
+
+
+
+## Time Series Exercise
+With the mission time series chart:
+
+1.  Use the area geom instead of line geom.
+
+2.  Change the points to blue and the shape to a diamond.
+
+3.  Add a title to the graph and center it.
+
+4.  Change the x-axis label to "Date"
+
+5.  Change the y-axis label to "# of Missions"
+
+6.  Use "alpha" parameter to adjust the transparency of the area geom.
+
+7.  Change the fill color of the area geom to blue.
+
+8.  Make an annotation of "Max Missions" for the day with the most missions above the peak on the chart.
+
+
+
+## Multi-Line Charts
+
+First, lets summarize by "MSNDATE" and "TGTCOUNTRY".
+
+```{r}
+msn2 <- dplyr::summarise(group_by(nam65, MSNDATE, TGTCOUNTRY), missions = n())
+head(msn2)
+```
+
+Chart a line for each country, using the `color` aesthetic to map to the "TGTCOUNTRY" variable.
+
+```{r}
+ggplot(msn2,aes(x=MSNDATE, y= missions, color = TGTCOUNTRY)) +
+  geom_line() +
+  scale_x_date(breaks=datebreaks, labels = date_format("%d-%b-%y")) +
+  theme(axis.text.x=element_text(angle=90, hjust=1, vjust = .5)) 
+```
+
+## Facet Charts
+
+A useful technique in data visualization is to render sub-plots of a set of variables, as opposed to having all the variables on one plot.  This is called faceting.  In this case, we will split out our multi-line chart into a sub-plot for each target country.
+
+- Use `facet_grid()` or `facet_wrap()` to plot subsets on separate panels.
+
+- To display sub-panels vertically, use `facet_grid(TGTCOUNTRY ~ .)`
+
+- To display sub-panels horizontally, use `facet_grid(. ~ TGTCOUNTRY)`
+
+- To display a sequence that wraps based on a number of rows and columns, use `facet_wrap(~TGTCOUNTRY, ncol = 2)`
+
+```{r}
+ggplot(msn2,aes(x=MSNDATE, y= missions)) +
+  geom_line() +
+  facet_grid(. ~ TGTCOUNTRY)
+```
+
+## Facet Exercise
+Using the vietnam dataset:
+
+1. Create a new dataframe for number of aircraft used per operation by day.  Hint:  `summarize(group_by())`
+
+2. Replace the blanks in the OPERATIONSUPPORTED variable with "Not Specified".
+
+3. Make a facet time series chart with number of aircraft on the y-axis and facets by operation supported.
+
+
+
+
+## Histograms
+A histogram is used to map a continuous variable to the x-axis and use bins to depict the distribution of that variable.
+
+### hist()
+Let's take a look at the distribution of missions by time of day based on the "TIMEONTARGET" variable.
+
+Base R has a simple histogram function, `hist()`.
+```{r}
+hist(nam65$TIMEONTARGET)
+```
+
+We can adjust the number of bins with the "breaks" parameter.
+```{r}
+hist(nam65$TIMEONTARGET, breaks = 24)
+```
+
+### geom_histogram()
+But if we want to apply the customization and other techniques we've learned to this plot, we need to use **ggplot2**.
+
+In **ggplot2**, the geom for histograms is:  `geom_histogram()`.
+
+Here's a basic histogram with **ggplot2**:
+```{r}
+ggplot(data = nam65, aes(x = TIMEONTARGET)) +
+  geom_histogram()
+
+```
+
+### Bins
+The default in **ggplot** is 30 bins.  But we can set the number of bins in two ways.  
+
+First, we can change the width of the bin.    
+
+- Use "100" as the binwidth to approximate an hour.  
+
+- We will also adjust the fill and border colors to make the graph easier to read.  
+
+```{r}
+ggplot(data = nam65, aes(x = TIMEONTARGET)) +
+  geom_histogram(binwidth = 100, fill = "lightblue", color = "black")
+```
+
+
+Another option is to set the number of bins with the "bins" parameter.  
+```{r}
+ggplot(data = nam65, aes(x = TIMEONTARGET)) +
+  geom_histogram(bins = 24, fill = "pink", color = "black")
+```
+
+## Histogram Exercise
+
+1.  Build a histogram for the distribution of missions per day.  Hint:  set the bins equal to the number of days in the dataset.
+
+2.  Make the color of the bars light blue and the outline of the bars navy blue.
+
+
+
+## Interactive Graphics
+
+You can create interactive graphics with the **plotly** package.
+
+- Plotly works as a wrapper around  charts made in base R or ggplot.
+
+- Create an object with your ggplot code, then use `ggplotly()` to convert the plot.
+
+```{r eval = FALSE, warning=FALSE, message = FALSE}
+g <- ggplot(msn2,aes(x=MSNDATE, y= missions, color = TGTCOUNTRY)) +
+  geom_line()+
+  scale_x_date(breaks=datebreaks, labels = date_format("%d-%b-%y")) +
+  theme(axis.text.x=element_text(angle=90, hjust=1, vjust = .5))
+
+ggplotly(g)
+
+
+```
+
+
+
+
+
+
+
+
