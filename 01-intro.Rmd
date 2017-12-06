@@ -1,0 +1,64 @@
+# Introduction
+This module is about creating visualizations in R, using the **ggplot2** package.  We will add to the basic information about visualization covered in the pre-course work but continue to focus on bar charts, line charts, and histograms.
+
+- **ggplot2** is among the most useful and widely used for visualization in R.  
+
+- Plots are constructed in layers, which can be more intuitive.
+
+- This package is among the most useful and widely used for visualization in R, created by Hadley Wickham.  
+
+- There are plotting functions available in base R but **ggplot2** provides a powerful, intuitive framework for creating and customizing visualizations.
+
+Here's some examples:
+<http://www.r-graph-gallery.com/portfolio/ggplot2-package>
+
+
+## ggplot2 Package
+
+The **ggplot2** package is based on the grammar of graphics, which breaks graphics into parts which are controlled separately and combined.  Every graph has the same basic components - data, a coordinate system, and geoms that represent data points visually.  
+
+First, lets install the packages we will use in this module.
+```{r warning=FALSE,comment=FALSE,message=FALSE}
+library(ggplot2)
+library(RColorBrewer)
+library(plyr)
+library(dplyr)
+library(scales)
+```
+
+Also, clear your Global Environment.
+```{r}
+rm(list = ls())
+```
+
+
+## References
+
+Some useful references include:
+
+- <http://www.cookbook-r.com>
+
+- <http://ggplot2.tidyverse.org/reference/>
+
+- <https://www.rstudio.com/resources/cheatsheets/>
+
+- "R Graphics Cookbook" by Winston Chang  (PDF can be found online at <http://ase.tufts.edu/bugs/guide/assets/R%20Graphics%20Cookbook.pdf>)
+
+- <http://www.google.com>
+
+
+## Layering
+Every graph has the same basic components: 
+
+1.  Data
+* usually a data frame 
+
+2.  Aesthetic mapping
+* how variables in the data frame map to visual objects on the graph
+* objects (or aesthetics) to map to include x-axis, y-axis, size, shape, color, transparency
+* specified with the `aes()` function
+
+3.  Geoms that represent data points visually.  
+* specifies the type of plot
+* geom = geometric object
+* examples (see the cheatsheet!): `geom_line()`, `geom_point()`, `geom_bar()`, `geom_histogram()`  
